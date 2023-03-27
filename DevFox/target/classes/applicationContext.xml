@@ -42,7 +42,7 @@
 	</tx:advice>
 	
 	<aop:config>
-		<aop:pointcut expression="execution(* com.globalin.biz..*Impl.*(..))" id="txPointcut"/>
+		<aop:pointcut expression="execution(* com.DevFox.biz..*Impl.*(..))" id="txPointcut"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
 	</aop:config>
 	
