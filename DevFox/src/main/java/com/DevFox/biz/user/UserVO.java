@@ -18,6 +18,8 @@ public class UserVO {
 	    this.regDate = regDate;
 	  }
     
+    public UserVO() {}
+    
     // getter, setter 메소드 생략
     
 
