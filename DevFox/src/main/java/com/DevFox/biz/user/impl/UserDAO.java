@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.DevFox.biz.user.UserVO;
 
-@Repository("userDAO")
+//@Repository("userDAO")
 public class UserDAO {
     private final String INSERT_USER_SQL = "INSERT INTO USERS (USERNAME, PASSWORD, EMAIL) VALUES (?, ?, ?)";
     private final String SELECT_USER_SQL = "SELECT * FROM USERS WHERE USER_ID = ?";

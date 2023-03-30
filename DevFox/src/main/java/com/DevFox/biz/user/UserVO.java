@@ -9,6 +9,8 @@ public class UserVO {
     private String password;
     private String email;
     private Date regDate;
+    private String role;
+    
     
     public UserVO(int userId, String username, String password, String email, Date regDate) {
 	    this.userId = userId;
@@ -16,6 +18,7 @@ public class UserVO {
 	    this.password = password;
 	    this.email = email;
 	    this.regDate = regDate;
+	    
 	  }
     
     public UserVO() {}
@@ -62,6 +65,16 @@ public class UserVO {
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	
 
 
 }
