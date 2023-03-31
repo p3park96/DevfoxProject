@@ -6,12 +6,12 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class PointcutCommon {
 
-	@Pointcut("execution(* com.globalin.biz..*Impl.*(..))")
+	@Pointcut("execution(* com.DevFox.biz..*Impl.*(..))")
 	public void allPointcut() {
 		
 	}
 	
-	@Pointcut("execution(* com.globalin.biz..*Impl.get*(..))")
+	@Pointcut("execution(* com.DevFox.biz..*Impl.get*(..))")
 	public void getPointcut() {
 		
 	}

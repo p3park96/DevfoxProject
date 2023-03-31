@@ -11,7 +11,7 @@ import org.springframework.util.StopWatch;
 @Aspect
 public class AroundAdvice {
 	
-	@Pointcut("execution(* com.globalin.biz..*Impl.*(..))")
+	@Pointcut("execution(* com.DevFox.biz..*Impl.*(..))")
 	public void allPointcut() {
 		
 	}

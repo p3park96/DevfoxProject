@@ -7,15 +7,15 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Service;
 
 @Service
-@Aspect	// Aspect = Pointcut + Advice
+@Aspect	
 public class LogAdvice {
 	
-	@Pointcut("execution(* com.globalin.biz..*Impl.*(..))")
+	@Pointcut("execution(* com.DevFox.biz..*Impl.*(..))")
 	public void allPointcut() {
 		
 	}
 	
-	@Pointcut("execution(* com.globalin.biz..*Impl.get*(..))")
+	@Pointcut("execution(* com.DevFox.biz..*Impl.get*(..))")
 	public void getPointcut() {
 		
 	}

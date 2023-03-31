@@ -1,9 +1,7 @@
 package com.DevFox.biz.user.impl;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.sql.DataSource;
 
@@ -11,85 +9,168 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.DevFox.biz.user.UserVO;
+import com.DevFox.biz.common.JDBCUtil;
 
-//@Repository("userDAO")
+// DAO(Data Access Object)
+@Repository("userDAO")
 public class UserDAO {
-    private final String INSERT_USER_SQL = "INSERT INTO USERS (USERNAME, PASSWORD, EMAIL) VALUES (?, ?, ?)";
-    private final String SELECT_USER_SQL = "SELECT * FROM USERS WHERE USER_ID = ?";
-    private final String SELECT_ALL_USERS_SQL = "SELECT * FROM USERS";
-    private final String UPDATE_USER_SQL = "UPDATE USERS SET USERNAME = ?, PASSWORD = ?, EMAIL = ? WHERE USER_ID = ?";
-    private final String DELETE_USER_SQL = "DELETE FROM USERS WHERE USER_ID = ?";
+
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
 
     @Autowired
     private DataSource dataSource;
+	 
+	// SQL 명령어들
+	private final String user_INSERT="insert into users(no, id, name, password) values((select nvl(max(no),0)+1 from users), ?, ?, ?)";
+	private final String user_UPDATE="update users set id=?, password=? where no=?";
+	private final String user_DELETE="delete from users where no=?";
+	private final String user_GET="SELECT * FROM users WHERE id=? AND password=?";
+	private final String user_LIST="select * from users order by no desc";
 
-    public int createUser(UserVO user) throws SQLException {
-  	  int newId = -1;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(INSERT_USER_SQL, new String[]{"user_ID"})) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getEmail());
-            int affectedRows = stmt.executeUpdate();
-    	    if (affectedRows == 0) {
-    	      throw new SQLException("Creating user failed, no rows affected.");
-    	    }
-    	    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-    	      if (generatedKeys.next()) {
-    	        newId = generatedKeys.getInt(1);
-    	      } else {
-    	        throw new SQLException("Creating user failed, no ID obtained.");
-    	      }
-    	    }
-    	  }
-    	  return newId;
-    	}
+	
+	// CRUD 메소드 구현
+	// 글 등록
+	
+	 
+	public void insertUser(UserVO vo) {
+		
+		System.out.println("====> JDBC로 insertuser() 기능 처리.");
+		
+		try {
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(user_INSERT);
+			pstmt.setString(1, vo.getId());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getPassword());
+			rs = pstmt.executeQuery();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+	}
+	
+	
+	// 글 수정
+	public void updateUser(UserVO vo) {
+		
+		System.out.println("====> JDBC로 updateuser() 기능 처리.");
+		
+		try {
 
-    public UserVO getUserById(int userId) throws SQLException {
-        UserVO user = null;
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_USER_SQL)) {
-            stmt.setInt(1, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    user = new UserVO(rs.getInt("USER_ID"), rs.getString("USERNAME"), rs.getString("PASSWORD"),
-                            rs.getString("EMAIL"), rs.getDate("REG_DATE"));
-                }
-            }
-        }
-        return user;
-    }
-
-    public List<UserVO> getAllUsers() throws SQLException {
-        List<UserVO> users = new ArrayList<>();
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_ALL_USERS_SQL);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                UserVO user = new UserVO(rs.getInt("USER_ID"), rs.getString("USERNAME"), rs.getString("PASSWORD"),
-                        rs.getString("EMAIL"), rs.getDate("REG_DATE"));
-                users.add(user);
-            }
-        }
-        return users;
-    }
-
-    public void updateUser(UserVO user) throws SQLException {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(UPDATE_USER_SQL)) {
-            stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
-            stmt.setString(3, user.getEmail());
-            stmt.setInt(4, user.getUserId());
-            stmt.executeUpdate();
-        }
-    }
-
-    public void deleteUser(int userId) throws SQLException {
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(DELETE_USER_SQL)) {
-            stmt.setInt(1, userId);
-            stmt.executeUpdate();
-        }
-    }
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(user_UPDATE);
+			pstmt.setString(1, vo.getId());
+			pstmt.setString(2, vo.getPassword());
+			pstmt.setInt(3, vo.getNo());
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+		
+	}
+	
+	
+	// 글 삭제
+	public void deleteUser(UserVO vo) {
+		
+		System.out.println("====> JDBC로 deleteuser() 기능 처리.");
+		
+		try {
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(user_DELETE);
+			pstmt.setInt(1, vo.getNo());
+			rs = pstmt.executeQuery();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+		
+	}
+	
+	
+	// 글 상세조회
+	public UserVO getUser(UserVO vo) {
+		
+		System.out.println("====> JDBC로 getuser() 기능 처리.");
+		UserVO user = null;
+		
+		try {
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(user_GET);
+			pstmt.setString(1, vo.getId());
+			pstmt.setString(2, vo.getPassword());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				user = new UserVO();
+				user.setNo(rs.getInt("no"));
+				user.setId(rs.getString("id"));
+				user.setName(rs.getString("name"));
+				user.setPassword(rs.getString("password"));
+				user.setRdate(rs.getDate("rdate"));
+				user.setRole(rs.getString("role"));
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+		return user;
+	}
+	
+	// 글 목록조회
+	public List<UserVO> getUserList(UserVO vo) {
+		
+		System.out.println("====> JDBC로 getuserList() 기능 처리.");	
+		List<UserVO> userList = new ArrayList<UserVO>();
+		UserVO user = null;
+		try {
+			conn = dataSource.getConnection();
+			
+			
+				pstmt = conn.prepareStatement(user_LIST);
+			
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				user = new UserVO();
+				user.setNo(rs.getInt("no"));
+				user.setId(rs.getString("id"));
+				user.setName(rs.getString("name"));
+				user.setPassword(rs.getString("password"));
+				user.setRdate(rs.getDate("rdate"));
+				user.setRole(rs.getString("role"));
+				userList.add(user);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+			
+		return userList;
+	}
 }

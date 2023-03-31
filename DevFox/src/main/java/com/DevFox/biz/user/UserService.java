@@ -3,10 +3,14 @@ package com.DevFox.biz.user;
 
 import java.util.List;
 
+
 public interface UserService {
-  void createUser(UserVO user);
-  UserVO getUserById(int userId);
-  List<UserVO> getAllUsers();
-  void updateUser(UserVO user);
-  void deleteUser(int userId);
+
+	void insertUser(UserVO vo);
+	void updateUser(UserVO vo);
+	void deleteUser(UserVO vo);
+	UserVO getUser(UserVO vo);
+	List<UserVO> getUserList(UserVO vo);
 }
+	
+

@@ -1,93 +1,183 @@
 package com.DevFox.biz.board.impl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
-import com.DevFox.biz.board.BoardVO;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.DevFox.biz.board.BoardVO;
+import com.DevFox.biz.common.JDBCUtil;
+
+// DAO(Data Access Object)
 @Repository("boardDAO")
 public class BoardDAO {
+
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+
+    @Autowired
+    private DataSource dataSource;
+	 
+	// SQL 명령어들
+	private final String BOARD_INSERT="insert into board(seq, title, writer, content) values((select nvl(max(seq),0)+1 from board), ?, ?, ?)";
+	private final String BOARD_UPDATE="update board set title=?, content=? where seq=?";
+	private final String BOARD_DELETE="delete from board where seq=?";
+	private final String BOARD_GET="select * from board where seq=?";
+	private final String BOARD_LIST="select * from board order by seq desc";
+	private final String BOARD_LIST_T="select * from board where title like '%'||?||'%' order by seq desc"; 
+	private final String BOARD_LIST_C="select * from board where content like '%'||?||'%' order by seq desc"; 
 	
- @Autowired
-  private DataSource dataSource;
-
-
-  private final String INSERT_BOARD_SQL = "INSERT INTO BOARD (TITLE, CONTENT, WRITER) VALUES (?, ?, ?)";
-  private final String SELECT_BOARD_BY_ID_SQL = "SELECT * FROM BOARD WHERE BOARD_ID = ?";
-  private final String SELECT_ALL_BOARDS_SQL = "SELECT * FROM BOARD";
-  private final String UPDATE_BOARD_SQL = "UPDATE BOARD SET TITLE = ?, CONTENT = ? WHERE BOARD_ID = ?";
-  private final String DELETE_BOARD_SQL = "DELETE FROM BOARD WHERE BOARD_ID = ?";
-
-  public int insertBoard(BoardVO board) throws SQLException {
-	  int newId = -1;
-	  try (Connection conn = dataSource.getConnection();
-	      PreparedStatement stmt = conn.prepareStatement(INSERT_BOARD_SQL, new String[]{"BOARD_ID"})) {
-	    stmt.setString(1, board.getTitle());
-	    stmt.setString(2, board.getContent());
-	    stmt.setString(3, board.getWriter());
-	    int affectedRows = stmt.executeUpdate();
-	    if (affectedRows == 0) {
-	      throw new SQLException("Creating board failed, no rows affected.");
-	    }
-	    try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-	      if (generatedKeys.next()) {
-	        newId = generatedKeys.getInt(1);
-	      } else {
-	        throw new SQLException("Creating board failed, no ID obtained.");
-	      }
-	    }
-	  }
-	  return newId;
+	// CRUD 메소드 구현
+	// 글 등록
+	
+	 
+	public void insertBoard(BoardVO vo) {
+		
+		System.out.println("====> JDBC로 insertBoard() 기능 처리.");
+		
+		try {
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(BOARD_INSERT);
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getWriter());
+			pstmt.setString(3, vo.getContent());
+			rs = pstmt.executeQuery();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
 	}
+	
+	
+	// 글 수정
+	public void updateBoard(BoardVO vo) {
+		
+		System.out.println("====> JDBC로 updateBoard() 기능 처리.");
+		
+		try {
 
-  public BoardVO getBoard(int boardId) throws SQLException {
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(SELECT_BOARD_BY_ID_SQL)) {
-      stmt.setInt(1, boardId);
-      ResultSet rs = stmt.executeQuery();
-      if (rs.next()) {
-        return new BoardVO(rs.getInt("BOARD_ID"), rs.getString("TITLE"), rs.getString("CONTENT"), rs.getString("WRITER"), rs.getDate("WRITE_DATE"));
-      }
-    }
-    return null;
-  }
-
-  public List<BoardVO> getBoardList() throws SQLException {
-    List<BoardVO> boardList = new ArrayList<>();
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(SELECT_ALL_BOARDS_SQL)) {
-      ResultSet rs = stmt.executeQuery();
-      while (rs.next()) {
-        boardList.add(new BoardVO(rs.getInt("BOARD_ID"), rs.getString("TITLE"), rs.getString("CONTENT"), rs.getString("WRITER"), rs.getDate("WRITE_DATE")));
-      }
-    }
-    return boardList;
-  }
-
-  public void updateBoard(BoardVO board) throws SQLException {
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(UPDATE_BOARD_SQL)) {
-      stmt.setString(1, board.getTitle());
-      stmt.setString(2, board.getContent());
-      stmt.setInt(3, board.getBoardId());
-      stmt.executeUpdate();
-    }
-  }
-
-  public void deleteBoard(int boardId) throws SQLException {
-    try (Connection conn = dataSource.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(DELETE_BOARD_SQL)) {
-      stmt.setInt(1, boardId);
-      stmt.executeUpdate();
-    }
-  }
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(BOARD_UPDATE);
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setInt(3, vo.getSeq());
+			pstmt.executeUpdate();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+		
+	}
+	
+	
+	// 글 삭제
+	public void deleteBoard(BoardVO vo) {
+		
+		System.out.println("====> JDBC로 deleteBoard() 기능 처리.");
+		
+		try {
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(BOARD_DELETE);
+			pstmt.setInt(1, vo.getSeq());
+			rs = pstmt.executeQuery();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+		
+	}
+	
+	
+	// 글 상세조회
+	public BoardVO getBoard(BoardVO vo) {
+		
+		System.out.println("====> JDBC로 getBoard() 기능 처리.");
+		BoardVO board = null;
+		
+		try {
+			
+			conn = dataSource.getConnection();
+			pstmt = conn.prepareStatement(BOARD_GET);
+			pstmt.setInt(1, vo.getSeq());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				board = new BoardVO();
+				board.setSeq(rs.getInt("seq"));
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegDate(rs.getDate("reg_Date"));
+				board.setCnt(rs.getInt("cnt"));
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+		
+		
+		return board;
+	}
+	
+	// 글 목록조회
+	public List<BoardVO> getBoardList(BoardVO vo) {
+		
+		System.out.println("====> JDBC로 getBoardList() 기능 처리.");	
+		List<BoardVO> boardList = new ArrayList<BoardVO>();
+		BoardVO board = null;
+		try {
+			conn = dataSource.getConnection();
+			
+			if(vo.getSearchCondition() != null && !vo.getSearchCondition().equals("")) {
+				if(vo.getSearchCondition().equals("TITLE")) {
+					pstmt = conn.prepareStatement(BOARD_LIST_T);
+				}else if(vo.getSearchCondition().equals("CONTENT")) {
+					pstmt = conn.prepareStatement(BOARD_LIST_C);
+				}
+				pstmt.setString(1, vo.getSearchKeyword());
+			}else {
+				pstmt = conn.prepareStatement(BOARD_LIST);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				board = new BoardVO();
+				board.setSeq(rs.getInt("seq"));
+				board.setTitle(rs.getString("title"));
+				board.setWriter(rs.getString("writer"));
+				board.setContent(rs.getString("content"));
+				board.setRegDate(rs.getDate("reg_Date"));
+				board.setCnt(rs.getInt("cnt"));
+				boardList.add(board);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(rs, pstmt, conn);
+		}
+			
+		return boardList;
+	}
 }
