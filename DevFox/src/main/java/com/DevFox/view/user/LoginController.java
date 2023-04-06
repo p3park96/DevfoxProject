@@ -1,8 +1,5 @@
 package com.DevFox.view.user;
 
-
-import java.lang.annotation.Annotation;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -21,8 +18,8 @@ public class LoginController{
 	@RequestMapping(value="/login.do", method=RequestMethod.GET)
 	public String loginView(UserVO vo) { // get 방식
 		System.out.println("로그인 화면으로 이동 .......");
-		vo.setId("test");
-		vo.setPassword("test123");
+		vo.setId("");
+		vo.setPassword("");
 		
 		return "login.jsp";
 	}
@@ -46,7 +43,7 @@ public class LoginController{
 	    
 	    if (user != null) {
 	        session.setAttribute("userName", user.getName());
-	        return "getBoardList.do";
+	        return "getBoardList.jsp";
 	    } else {
 	        return "login.jsp";
 	    }

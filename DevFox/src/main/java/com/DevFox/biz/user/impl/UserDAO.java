@@ -15,9 +15,9 @@ import com.DevFox.biz.common.JDBCUtil;
 @Repository("userDAO")
 public class UserDAO {
 
-	private Connection conn = null;
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
+	private Connection conn;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
 
     @Autowired
     private DataSource dataSource;
@@ -32,8 +32,7 @@ public class UserDAO {
 	
 	// CRUD 메소드 구현
 	// 글 등록
-	
-	 
+
 	public void insertUser(UserVO vo) {
 		
 		System.out.println("====> JDBC로 insertuser() 기능 처리.");
@@ -109,18 +108,18 @@ public class UserDAO {
 	public UserVO getUser(UserVO vo) {
 		
 		System.out.println("====> JDBC로 getuser() 기능 처리.");
-		UserVO user = null;
+		UserVO user = new UserVO();
 		
 		try {
-			
-			conn = dataSource.getConnection();
+			System.out.println("----> JDBC로 getUser() 기능 처리....");
+			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(user_GET);
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPassword());
 			rs = pstmt.executeQuery();
+		
 			
 			if(rs.next()) {
-				user = new UserVO();
 				user.setNo(rs.getInt("no"));
 				user.setId(rs.getString("id"));
 				user.setName(rs.getString("name"));
@@ -147,7 +146,7 @@ public class UserDAO {
 		UserVO user = null;
 		try {
 			conn = dataSource.getConnection();
-			
+			System.out.println(dataSource.toString());
 			
 				pstmt = conn.prepareStatement(user_LIST);
 			
@@ -163,6 +162,7 @@ public class UserDAO {
 				user.setRdate(rs.getDate("rdate"));
 				user.setRole(rs.getString("role"));
 				userList.add(user);
+				System.out.println("No: " + user.getNo() + "가 추가되었습니다.");
 			}
 			
 		}catch(Exception e) {

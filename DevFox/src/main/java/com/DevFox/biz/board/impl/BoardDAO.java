@@ -3,9 +3,6 @@ package com.DevFox.biz.board.impl;
 import java.sql.*;
 import java.util.*;
 
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.DevFox.biz.board.BoardVO;
@@ -14,14 +11,12 @@ import com.DevFox.biz.common.JDBCUtil;
 // DAO(Data Access Object)
 @Repository("boardDAO")
 public class BoardDAO {
-
+	
+	// JDBC 관련 변수 선언
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
-
-    @Autowired
-    private DataSource dataSource;
-	 
+	
 	// SQL 명령어들
 	private final String BOARD_INSERT="insert into board(seq, title, writer, content) values((select nvl(max(seq),0)+1 from board), ?, ?, ?)";
 	private final String BOARD_UPDATE="update board set title=?, content=? where seq=?";
@@ -33,15 +28,13 @@ public class BoardDAO {
 	
 	// CRUD 메소드 구현
 	// 글 등록
-	
-	 
 	public void insertBoard(BoardVO vo) {
 		
 		System.out.println("====> JDBC로 insertBoard() 기능 처리.");
 		
 		try {
 			
-			conn = dataSource.getConnection();
+			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(BOARD_INSERT);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getWriter());
@@ -64,8 +57,7 @@ public class BoardDAO {
 		System.out.println("====> JDBC로 updateBoard() 기능 처리.");
 		
 		try {
-
-			conn = dataSource.getConnection();
+			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(BOARD_UPDATE);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContent());
@@ -90,7 +82,7 @@ public class BoardDAO {
 		
 		try {
 			
-			conn = dataSource.getConnection();
+			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(BOARD_DELETE);
 			pstmt.setInt(1, vo.getSeq());
 			rs = pstmt.executeQuery();
@@ -114,7 +106,7 @@ public class BoardDAO {
 		
 		try {
 			
-			conn = dataSource.getConnection();
+			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(BOARD_GET);
 			pstmt.setInt(1, vo.getSeq());
 			rs = pstmt.executeQuery();
@@ -125,7 +117,7 @@ public class BoardDAO {
 				board.setTitle(rs.getString("title"));
 				board.setWriter(rs.getString("writer"));
 				board.setContent(rs.getString("content"));
-				board.setRegDate(rs.getDate("reg_Date"));
+				board.setRegDate(rs.getDate("regDate"));
 				board.setCnt(rs.getInt("cnt"));
 			}
 			
@@ -146,19 +138,16 @@ public class BoardDAO {
 		List<BoardVO> boardList = new ArrayList<BoardVO>();
 		BoardVO board = null;
 		try {
-			conn = dataSource.getConnection();
 			
-			if(vo.getSearchCondition() != null && !vo.getSearchCondition().equals("")) {
-				if(vo.getSearchCondition().equals("TITLE")) {
-					pstmt = conn.prepareStatement(BOARD_LIST_T);
-				}else if(vo.getSearchCondition().equals("CONTENT")) {
-					pstmt = conn.prepareStatement(BOARD_LIST_C);
-				}
-				pstmt.setString(1, vo.getSearchKeyword());
-			}else {
-				pstmt = conn.prepareStatement(BOARD_LIST);
+			conn = JDBCUtil.getConnection();
+			if(vo.getSearchCondition().equals("TITLE")) {
+				pstmt = conn.prepareStatement(BOARD_LIST_T);
+			}else if(vo.getSearchCondition().equals("CONTENT")) {
+				pstmt = conn.prepareStatement(BOARD_LIST_C);
 			}
+			pstmt.setString(1, vo.getSearchKeyword());
 			
+			// pstmt = conn.prepareStatement(BOARD_LIST);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -167,7 +156,7 @@ public class BoardDAO {
 				board.setTitle(rs.getString("title"));
 				board.setWriter(rs.getString("writer"));
 				board.setContent(rs.getString("content"));
-				board.setRegDate(rs.getDate("reg_Date"));
+				board.setRegDate(rs.getDate("regDate"));
 				board.setCnt(rs.getInt("cnt"));
 				boardList.add(board);
 			}
@@ -177,7 +166,7 @@ public class BoardDAO {
 		}finally {
 			JDBCUtil.close(rs, pstmt, conn);
 		}
-			
+		
 		return boardList;
 	}
 }

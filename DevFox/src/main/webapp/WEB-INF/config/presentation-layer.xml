@@ -17,6 +17,7 @@
 	<property name="maxUploadSize" value="100000"></property>	
 </bean>
 	
+
 <!-- 예외 처리 설정 -->
 <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 	<property name="exceptionMappings">
@@ -31,12 +32,13 @@
 </bean>
 
 <!-- 다국어 설정 -->
-<!-- MessageSource 등록 -->
+	<!-- MessageSource Configuration -->
 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 	<property name="basenames">
 		<list>
 			<value>message.messageSource</value>
 		</list>
+	
 	</property>
 </bean>
 

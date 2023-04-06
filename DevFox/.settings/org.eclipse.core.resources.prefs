@@ -1,5 +1,3 @@
 eclipse.preferences.version=1
-encoding//Users/USER/eclipse-workspace/Spring/DevFox/target/m2e-wtp/web-resources/META-INF/src/main/java/com/globalin/biz/board/impl/BoardDAO.java=UTF-8
-encoding//Users/USER/eclipse-workspace/Spring/DevFox/target/m2e-wtp/web-resources/META-INF/src/main/java/com/globalin/view/controller/DispatcherServlet.java=UTF-8
-encoding//src/main/java/com/DevFox/biz/board/impl/BoardDAO.java=UTF-8
+encoding//src/main/java/com/DevFox/biz/board/impl/BoardDAOSpring.java=UTF-8
 encoding//src/main/java/com/DevFox/view/board/BoardController.java=UTF-8

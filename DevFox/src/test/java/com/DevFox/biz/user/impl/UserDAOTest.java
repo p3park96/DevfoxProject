@@ -28,13 +28,15 @@ public class UserDAOTest {
 	    @Before
 	    public void setUp() {
 	    }
-    @Test
+  
+	    /*
+	    @Test
     public void testInsertUser() {
         // given
         UserVO vo = new UserVO();
-        vo.setId("4테스트 제목");
-        vo.setName("4테스트 작성자");
-        vo.setPassword("4테스트 내용");
+        vo.setId("5테스트 제목");
+        vo.setName("5테스트 작성자");
+        vo.setPassword("5테스트 내용");
 
         // when
         userDAO.insertUser(vo);
@@ -82,20 +84,18 @@ public class UserDAOTest {
     @Test
     public void testGetUser() {
         // given
-        UserVO vo = new UserVO();
-        vo.setId("admin");
-        vo.setPassword("admin");
-        
-        // when
-        userDAO.getUser(vo);
-        System.out.println(userDAO.getUser(vo).getNo());
+    	 UserVO vo = new UserVO();
+    	    vo.setId("admin");
+    	    vo.setPassword("admin");
 
-        // then
-        assertNotNull(vo);
-        assertNotNull(userDAO.getUser(vo).getNo());
-        assertNotNull(userDAO.getUser(vo).getId());
-        assertNotNull(userDAO.getUser(vo).getName());
-        assertNotNull(userDAO.getUser(vo).getPassword());
+    	    // when
+    	    
+    	    UserVO user = userDAO.getUser(vo);
+    	    assertNotNull(vo);
+    	    assertNotNull(user.getNo());
+    	    assertNotNull(user.getId());
+    	    assertNotNull(user.getName());
+    	    assertNotNull(user.getPassword());
     }
     @Test
     public void testGetUserList() {

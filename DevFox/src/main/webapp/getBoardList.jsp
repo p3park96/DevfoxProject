@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="org.springframework.context.i18n.LocaleContextHolder" %>
+<%Locale currentLocale = LocaleContextHolder.getLocale();
+System.out.println(currentLocale);%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +24,7 @@
 			<tr>
 				<td align="right">
 					<select name="searchCondition">
-					<!-- 
-						<c:forEach var="option" items="${conditionMap }">
-							<option value="${option.value }">${option.key }</option>
-						</c:forEach>
-					-->
+			
 						<c:forEach begin="0" items="1">
 							<option><spring:message code="message.board.list.search.condition.title" /></option>
 							<option><spring:message code="message.board.list.search.condition.content" /></option>
