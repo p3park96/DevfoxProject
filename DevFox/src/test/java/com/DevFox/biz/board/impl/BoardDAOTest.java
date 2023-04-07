@@ -21,7 +21,7 @@ import com.DevFox.biz.board.BoardVO;
 public class BoardDAOTest {
 
 	 @Autowired
-	    private BoardDAO boardDAO;
+	    private BoardServiceImpl boardDAO;
 	 
 	 
 

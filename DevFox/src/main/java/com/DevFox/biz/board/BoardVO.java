@@ -11,10 +11,45 @@ public class BoardVO {
 	private String writer;
 	private String content;
 	private Date regDate;
+
+
+	private int type;
 	private int cnt;
 	private String searchCondition;
 	private String searchKeyword;
 	private MultipartFile uploadFile;
+	private String password;
+	private int like;
+	private int bad;
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int getLike() {
+		return like;
+	}
+	public void setLike(int like) {
+		this.like = like;
+	}
+	public int getBad() {
+		return bad;
+	}
+	public void setBad(int bad) {
+		this.bad = bad;
+	}
+	
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
+	}
+
+
 	
 	public MultipartFile getUploadFile() {
 		return uploadFile;
@@ -71,10 +106,12 @@ public class BoardVO {
 		this.cnt = cnt;
 	}
 	
+	
+	
 	@Override
 	public String toString() {
 		
-		return "BoardVO [seq="+seq+", title="+title+", writer="+writer+", content="+content+", regDate="+regDate+", cnt="+cnt+"]";
+		return "BoardVO [seq="+seq+", title="+title+", writer="+writer+", content="+content+", regDate="+regDate+", cnt="+cnt+", type="+type+"]";
 	}
 	
 }

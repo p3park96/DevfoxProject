@@ -7,7 +7,6 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-//import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.DevFox.biz.board.BoardVO;
@@ -39,20 +38,14 @@ import com.DevFox.biz.board.BoardVO;
 		
 	}
 	
-	
-	// 글 수정
 	public void updateBoard(BoardVO vo) {
 		
 		System.out.println("====> Spring JDBC로 updateBoard() 기능 처리.");
 		jdbcTemplate.update(BOARD_UPDATE, vo.getTitle(), vo.getContent(), vo.getSeq());
-		
-		
-		
+
 		
 	}
 	
-	
-	// 글 삭제
 	public void deleteBoard(BoardVO vo) {
 		
 		System.out.println("====> Spring JDBC로 deleteBoard() 기능 처리.");
@@ -62,8 +55,7 @@ import com.DevFox.biz.board.BoardVO;
 		
 	}
 	
-	
-	// 글 상세조회
+
 	public BoardVO getBoard(BoardVO vo) {
 		
 		System.out.println("====> Spring JDBC로 getBoard() 기능 처리.");

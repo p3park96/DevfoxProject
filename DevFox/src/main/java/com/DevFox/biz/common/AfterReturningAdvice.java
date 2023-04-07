@@ -19,7 +19,7 @@ public class AfterReturningAdvice {
 		String method = jp.getSignature().getName();
 		if(returnObj instanceof UserVO) {
 			UserVO user = (UserVO)returnObj;
-			if(user.getRole().equals("Admin")) {
+			if(user.getRole()==10) {
 				System.out.println(user.getName()+"로그인(Admin)");
 			}
 		}

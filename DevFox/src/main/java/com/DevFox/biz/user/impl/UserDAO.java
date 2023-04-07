@@ -56,7 +56,6 @@ public class UserDAO {
 	}
 	
 	
-	// 글 수정
 	public void updateUser(UserVO vo) {
 		
 		System.out.println("====> JDBC로 updateuser() 기능 처리.");
@@ -81,7 +80,6 @@ public class UserDAO {
 	}
 	
 	
-	// 글 삭제
 	public void deleteUser(UserVO vo) {
 		
 		System.out.println("====> JDBC로 deleteuser() 기능 처리.");
@@ -104,14 +102,12 @@ public class UserDAO {
 	}
 	
 	
-	// 글 상세조회
 	public UserVO getUser(UserVO vo) {
 		
 		System.out.println("====> JDBC로 getuser() 기능 처리.");
 		UserVO user = new UserVO();
 		
 		try {
-			System.out.println("----> JDBC로 getUser() 기능 처리....");
 			conn = JDBCUtil.getConnection();
 			pstmt = conn.prepareStatement(user_GET);
 			pstmt.setString(1, vo.getId());
@@ -125,7 +121,7 @@ public class UserDAO {
 				user.setName(rs.getString("name"));
 				user.setPassword(rs.getString("password"));
 				user.setRdate(rs.getDate("rdate"));
-				user.setRole(rs.getString("role"));
+				user.setRole(rs.getInt("role"));
 			}
 			
 		}catch(Exception e) {
@@ -160,7 +156,7 @@ public class UserDAO {
 				user.setName(rs.getString("name"));
 				user.setPassword(rs.getString("password"));
 				user.setRdate(rs.getDate("rdate"));
-				user.setRole(rs.getString("role"));
+				user.setRole(rs.getInt("role"));
 				userList.add(user);
 				System.out.println("No: " + user.getNo() + "가 추가되었습니다.");
 			}

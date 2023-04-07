@@ -14,7 +14,7 @@
 <br>
 <br>
 <br>
-<a href="getBoardList.do">글 목록 바로가기</a>
+<a href="getBoardList.do">글 목록 바로가기</a>&nbsp;&nbsp;<a href="signup.do">회원가입</a>
 <hr>
 </div>
 </body>

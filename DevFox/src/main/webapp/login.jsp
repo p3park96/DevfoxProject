@@ -1,7 +1,7 @@
 	<%@ page language="java" contentType="text/html; charset=UTF-8"
 	    pageEncoding="UTF-8"%>
 	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-	<%System.out.println(System.getProperty("java.class.path")); %>
+	
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -19,7 +19,7 @@
 		<spring:message code="message.user.login.language.ko" />
 	</a>&nbsp;&nbsp;
 	<hr>
-	<form action="login_proc.jsp" method="post">
+		<form action="${pageContext.request.contextPath}/login.do" method="post">
 		<table border="1" cellpadding="0" cellspacing="0">
 			<tr>
 				<td bgcolor="orange"><spring:message code="message.user.login.id" /></td>
@@ -37,6 +37,12 @@
 		</table>
 	</form>
 	<hr>
+	<a href="${pageContext.request.contextPath}/getBoardList.do">글 목록 보기</a>&nbsp;&nbsp;<a href="signup.do">회원가입</a>
 	</div>
+	
+	<c:if test="${not empty errorMsg}">
+  <p style="color:red;">${errorMsg}</p>
+</c:if>
 	</body>
 	</html>
+	

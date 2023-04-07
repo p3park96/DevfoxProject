@@ -9,7 +9,7 @@ public class UserVO {
 	private String id;
 	private String password;
 	private String name;
-	private String role;
+	private int role;
 	private Date rdate;
 	
 	public String getId() {
@@ -30,10 +30,10 @@ public class UserVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getRole() {
+	public int getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(int role) {
 		this.role = role;
 	}
 
