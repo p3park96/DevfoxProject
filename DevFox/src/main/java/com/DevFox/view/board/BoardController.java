@@ -34,7 +34,7 @@ public class BoardController {
 		System.out.println("글 작성 처리..");
 
 		
-		return "writeBoard.jsp";
+		return "board/writeBoard.jsp";
 	}
 	
 	@RequestMapping(value="/insertBoard.do")
@@ -77,7 +77,7 @@ public class BoardController {
 	    BoardVO board = boardService.getBoard(vo);
 	    model.addAttribute("board", board);
 	    boardService.increaseCount(vo.getSeq()); // 글 조회 수 증가
-	    return "getBoard.jsp";
+	    return "board/getBoard.jsp";
 	}
 
 	@ModelAttribute("conditionMap")
@@ -102,7 +102,7 @@ public class BoardController {
 		
 		model.addAttribute("boardList", boardService.getBoardList(vo));
 		
-		return "getBoardList.jsp";
+		return "board/getBoardList.jsp";
 	}
 	
 }

@@ -15,6 +15,9 @@
 <br>
 <br>
 <a href="getBoardList.do">글 목록 바로가기</a>&nbsp;&nbsp;<a href="signup.do">회원가입</a>
+<a href="getExamList.do">정보처리기사 실기 공부</a>
+
+
 <hr>
 </div>
 </body>

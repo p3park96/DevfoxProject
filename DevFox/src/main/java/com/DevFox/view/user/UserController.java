@@ -34,7 +34,7 @@ public class UserController {
 		
 		session.invalidate();
 		
-		return "login.jsp";
+		return "user/login.jsp";
 	}
 
 	@Autowired
@@ -43,7 +43,7 @@ public class UserController {
 	@RequestMapping("/writeUser.do")
 	public String writeUser(UserVO vo) throws IOException {
 		System.out.println("유저 작성 처리..");		
-		return "writeUser.jsp";
+		return "userwriteUser.jsp";
 	}
 	
 	@Controller
@@ -55,7 +55,7 @@ public class UserController {
 			vo.setId("admin");
 			vo.setPassword("admin");
 			
-			return "login.jsp";
+			return "user/login.jsp";
 		}
 		
 		@RequestMapping(value="/login.do", method=RequestMethod.POST)
@@ -86,7 +86,7 @@ public class UserController {
 	@RequestMapping(value="/signup.do", method=RequestMethod.GET)
 	public String showSignupForm(Model model) {
 	    model.addAttribute("user", new UserVO());
-	    return "signupForm.jsp";
+	    return "user/signupForm.jsp";
 	}
 	
 	@RequestMapping(value="/insertUser.do")
@@ -125,7 +125,7 @@ public class UserController {
 		// Model 정보 저장
 		model.addAttribute("user", userService.getUser(vo));
 		
-		return "getUser.jsp"; // View 이름을 리턴함
+		return "user/getUser.jsp"; // View 이름을 리턴함
 	}
 
 	@ModelAttribute("conditionMap")

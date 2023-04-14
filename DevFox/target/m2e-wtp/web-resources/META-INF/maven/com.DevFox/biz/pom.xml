@@ -145,14 +145,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- @Inject -->
+
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-				
-		<!-- Servlet -->
+	
 		
 
 <dependency>
