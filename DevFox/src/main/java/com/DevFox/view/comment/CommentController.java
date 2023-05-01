@@ -18,7 +18,7 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 	
-	@RequestMapping(value = "/insertComment.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/writeComment.do", method = RequestMethod.POST)
 	public String insertComment(CommentVO vo, Model model) {
 		commentService.insertComment(vo);
 		model.addAttribute("commentList", commentService.getCommentList(vo));

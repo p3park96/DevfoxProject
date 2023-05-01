@@ -12,26 +12,28 @@
 	<center></center>
 	<div align="center">
 	<h1><spring:message code="message.user.login.title" /></h1>
-	<a href="login.do?lang=en">
+	<a href="login?lang=en">
 		<spring:message code="message.user.login.language.en" />
 	</a>&nbsp;&nbsp;
-	<a href="login.do?lang=ko">
+	<a href="login?lang=ko">
 		<spring:message code="message.user.login.language.ko" />
 	</a>&nbsp;&nbsp;
 	<hr>
-		<form action="${pageContext.request.contextPath}/login.do" method="post">
+		<form class="px-4 py-3" action="/login" method="post">
 		<table border="1" cellpadding="0" cellspacing="0">
 			<tr>
 				<td bgcolor="orange"><spring:message code="message.user.login.id" /></td>
-				<td><input type="text" name="id" value="${userVO.id }"></td>
+				<td><input type="text" class="form-control" name="loginid" placeholder="example""></td>
 			</tr>
+			
 			<tr>
 				<td bgcolor="orange"><spring:message code="message.user.login.password" /></td>
-				<td><input type="password" name="password" value="${userVO.password }"></td>
+				<td><input type="password" class="form-control" name="loginPwd"></td>
 			</tr>
+			  <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 			<tr>
 				<td colspan="2" align="center">
-					<input type="submit" value="<spring:message code="message.user.login.loginBtn" />">
+					<input type="submit" class="btn btn-primary" value="<spring:message code="message.user.login.loginBtn" />">
 				</td>
 			</tr>
 		</table>

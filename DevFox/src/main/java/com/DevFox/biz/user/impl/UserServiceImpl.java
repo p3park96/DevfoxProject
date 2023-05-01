@@ -10,7 +10,7 @@ import com.DevFox.biz.user.UserVO;
 import com.DevFox.biz.common.Log4jAdvice;
 
 
-@Service("userService")
+@Service("usersService")
 public class UserServiceImpl implements UserService {
 	private Log4jAdvice log;
 	@Autowired

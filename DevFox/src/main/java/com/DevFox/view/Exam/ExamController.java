@@ -70,46 +70,7 @@ public class ExamController {
 	        return "exam/getExam.jsp";
 	    }
 	}
-	
-	@RequestMapping(value = "/nextExam.do", method = RequestMethod.POST)
-	public String nextWrong(@RequestParam("favorite") int fav,
-	                       @RequestParam("id") int id,
-	                       Model model,
-	                       @ModelAttribute("examList") List<ExamVO> examList) {
 
-	    // VO 설정
-	    ExamVO exam = new ExamVO();
-	    exam.setId(id);
-	    exam.setFavorite(fav);
-
-	    // updateFav 서비스 실행
-	    examService.updateFav(exam);
-
-	    // 다음 문제 조회
-	    ExamVO newexam = null;
-	    for (int i = 0; i < examList.size() - 1; i++) {
-	        if (examList.get(i).getId() == id) {
-	            newexam = examList.get(i+1);
-	            break;
-	        }
-	    }
-
-	    if (newexam == null) {
-	        // 마지막 문제인 경우, 결과 페이지 출력
-	        return "resultExam";
-	    } else {
-	        newexam.setCnt(newexam.getCnt() + 1);
-	        examService.updateCnt(newexam);
-	        model.addAttribute("exam", newexam);
-	        return "exam/getExam.jsp";
-	    }
-	}
-    @RequestMapping(value = "/resultExam.do", method = RequestMethod.GET)
-    public String resultExam(Model model) {
-        // 결과 페이지 출력
-        return "resultExam";
-    }
-	
 	
     @RequestMapping("/getExamList.do")
     public String getExamList(@RequestParam(value = "wrong", required = false, defaultValue = "false") boolean wrong, ExamVO vo, Model model) {

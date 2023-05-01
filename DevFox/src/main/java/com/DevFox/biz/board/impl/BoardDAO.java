@@ -18,7 +18,7 @@ public class BoardDAO {
 	private ResultSet rs = null;
 	
 	// SQL 명령어들
-	private final String BOARD_INSERT="insert into board(seq, title, writer, content,type) values((select nvl(max(seq),0)+1 from board), ?, ?, ?,?)";
+	private final String BOARD_INSERT="insert into board(seq, title, writer, content) values((select nvl(max(seq),0)+1 from board), ?, ?, ?)";
 	private final String BOARD_UPDATE="update board set title=?, content=? where seq=?";
 	private final String BOARD_DELETE="delete from board where seq=?";
 	private final String BOARD_GET="select * from board where seq=?";
@@ -43,8 +43,6 @@ public class BoardDAO {
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getWriter());
 			pstmt.setString(3, vo.getContent());
-			pstmt.setString(4, vo.getPassword());
-			pstmt.setInt(5, vo.getType());
 			rs = pstmt.executeQuery();
 			
 		}catch(Exception e) {
@@ -172,8 +170,8 @@ public class BoardDAO {
 				board.setContent(rs.getString("content"));
 				board.setRegDate(rs.getDate("regDate"));
 				board.setCnt(rs.getInt("cnt"));
-				board.setLike(rs.getInt("like"));
-				board.setBad(rs.getInt("Bad"));
+				board.setLike(rs.getInt("likes"));
+				board.setBad(rs.getInt("bads"));
 				board.setType(rs.getInt("type"));
 			}
 			
@@ -216,7 +214,7 @@ public class BoardDAO {
 				board.setRegDate(rs.getDate("regDate"));
 				board.setCnt(rs.getInt("cnt"));
 				board.setLike(rs.getInt("likes"));
-				board.setBad(rs.getInt("Bads"));
+				board.setBad(rs.getInt("bads"));
 				boardList.add(board);
 			}
 			

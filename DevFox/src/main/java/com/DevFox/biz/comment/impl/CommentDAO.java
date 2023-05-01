@@ -18,13 +18,13 @@ public class CommentDAO {
 	private ResultSet rs = null;
 	
 	// SQL 명령어들
-	private final String COMMENT_INSERT="insert into comment(commentNo, writer,content,password,boardNo) values((select nvl(max(commentNo),0)+1 from comment),?, ?, ?, ?,?)";
-	private final String COMMENT_UPDATE="update comment set content=? where commentNo=?";
-	private final String COMMENT_DELETE="delete from comment where commentNo=?";
-	private final String COMMENT_GET="select * from comment where commentNo=?";
-	private final String COMMENT_LIST="select * from comment order by commentNo desc";
-	private final String COMMENT_LIKE_UPDATE = "update comment set like = like+1 where commentNo=?";
-	private final String COMMENT_BAD_UPDATE = "update comment set bad = bad+1 where commentNo=?";
+	private final String COMMENT_INSERT="insert into comments(commentNo, writer,content,password,boardNo) values((select nvl(max(commentNo),0)+1 from comments),?, ?, ?, ?,?)";
+	private final String COMMENT_UPDATE="update comments set content=? where commentNo=?";
+	private final String COMMENT_DELETE="delete from comments where commentNo=?";
+	private final String COMMENT_GET="select * from comments where commentNo=?";
+	private final String COMMENT_LIST="select * from comments order by commentNo desc";
+	private final String COMMENT_LIKE_UPDATE = "update comments set likes = likes+1 where commentNo=?";
+	private final String COMMENT_BAD_UPDATE = "update comments set bad = bad+1 where commentNo=?";
 	
 	// CRUD 메소드 구현
 	// 글 등록

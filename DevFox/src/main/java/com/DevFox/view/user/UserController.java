@@ -10,16 +10,27 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.DevFox.biz.user.UserService;
+import com.DevFox.biz.user.UserVO;
 import com.DevFox.biz.user.UserService;
 import com.DevFox.biz.user.UserVO;
 import com.DevFox.biz.user.impl.UserDAO;
@@ -34,7 +45,7 @@ public class UserController {
 		
 		session.invalidate();
 		
-		return "user/login.jsp";
+		return "user/loginPage";
 	}
 
 	@Autowired
@@ -47,41 +58,36 @@ public class UserController {
 	}
 	
 	@Controller
-	public class LoginController{
-		
-		@RequestMapping(value="/login.do", method=RequestMethod.GET)
-		public String loginView(UserVO vo) { // get 방식
-			System.out.println("로그인 화면으로 이동 .......");
-			vo.setId("admin");
-			vo.setPassword("admin");
-			
-			return "user/login.jsp";
-		}
-		
-		@RequestMapping(value="/login.do", method=RequestMethod.POST)
-		public String login(UserVO vo, UserDAO userDAO, HttpSession session, RedirectAttributes redirectAttributes) { // post 방식
+	public class LoginController{	
+	    @RequestMapping(value="/user/loginPage.do")
+	    public String page() throws Exception {
+	        System.out.println("로그인 화면으로 이동 .......");
+	        return "/user/loginPage.jsp";
 
-		    System.out.println("로그인 인증 처리 .......");
-
-		    if(vo.getId()==null||vo.getId().equals("")) {
-		        throw new IllegalArgumentException("아이디는 반드시 입력하셔야 합니다...");
-		    }
-		    
-		    UserVO user = userDAO.getUser(vo);
-		    
-		    if (user.getId()!= null) {
-		        session.setAttribute("userName", user.getName());
-		        redirectAttributes.addFlashAttribute("userName", user.getName());
-		        return "redirect:getBoardList.do";
-		    } else {
-		    	  System.out.println("로그인 실패!");
-		    	  redirectAttributes.addFlashAttribute("errorMsg", "로그인에 실패하였습니다.");
-		    	  return "redirect:login.do";
-		    	}
-		}
-
-	}
+	    }
 	
+	@RequestMapping(value="/login.do", method=RequestMethod.POST)
+	public String login(UserVO vo, UserDAO userDAO, HttpSession session, RedirectAttributes redirectAttributes) { // post 방식
+
+	    System.out.println("로그인 인증 처리 .......");
+
+	    if(vo.getId()==null||vo.getId().equals("")) {
+	        throw new IllegalArgumentException("아이디는 반드시 입력하셔야 합니다...");
+	    }
+	    
+	    UserVO user = userDAO.getUser(vo);
+	    
+	    if (user.getId()!= null) {
+	        session.setAttribute("userName", user.getName());
+	        redirectAttributes.addFlashAttribute("userName", user.getName());
+	        return "redirect:getBoardList.do";
+	    } else {
+	    	  System.out.println("로그인 실패!");
+	    	  redirectAttributes.addFlashAttribute("errorMsg", "로그인에 실패하였습니다.");
+	    	  return "redirect:login.do";
+	    	}
+	}
+	}
 	
 	@RequestMapping(value="/signup.do", method=RequestMethod.GET)
 	public String showSignupForm(Model model) {

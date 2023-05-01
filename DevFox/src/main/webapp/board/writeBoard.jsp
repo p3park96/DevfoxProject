@@ -22,12 +22,11 @@ pageEncoding="UTF-8"%>
 </h3>
 <hr>
 <form action="insertBoard.do" method="post">
-    <input type="hidden" name="seq" value="${board.seq }">
 <table border="1" cellpadding="0" cellspacing="0">
     <tr>
         <td bgcolor="orange">제목</td>
         <td align="left">
-            <input type="text" name="title" value="${board.title }">
+            <input type="text" name="title">
         </td>
     </tr>
     
@@ -38,32 +37,19 @@ pageEncoding="UTF-8"%>
     <td align="left"><input type="text" name="writer" size="10"></td>
   <% } else { %>
     <td align="left"><%= session.getAttribute("userName") %></td>
+    <input type="hidden" name="writer" value="<%= session.getAttribute("userName") %>">
   <% } %>
 </tr>
     
     <tr>
         <td bgcolor="orange">내용</td>
         <td align="left">
-            <textarea name="content" cols="40" rows="10">${board.content }</textarea>
+            <textarea name="content" cols="40" rows="10"></textarea>
         </td>
     </tr>
-    
-    <tr>
-        <td bgcolor="orange">등록일</td>
-        <td align="left">&nbsp;${board.regDate }
-        </td>
-    </tr>
-    
-    <tr>
-        <td bgcolor="orange" width="70">조회수</td>
-        <td align="left">&nbsp;${board.cnt }
-        </td>
-    </tr>
-    
-
         <tr>
             <td colspan="2" align="center">
-                <a href="deleteBoard.do?seq=${board.seq }">글 삭제</a>
+                	<input type="submit" value="글 등록">
             </td>
         </tr>
 </table>

@@ -40,19 +40,19 @@ public class BoardController {
 	@RequestMapping(value="/insertBoard.do")
 	public String insertBoard(BoardVO vo) throws IOException {
 		System.out.println("글 등록 처리..");
-		// 파일 업로드 처리
-		MultipartFile uploadFile = vo.getUploadFile(); 
-		if(!uploadFile.isEmpty()) {
-			String fileName = uploadFile.getOriginalFilename();
-			uploadFile.transferTo(new File("C:/aa/"+fileName));
-		}
 		// DB 연동 처리
 		boardService.insertBoard(vo);
 		
 		return "getBoardList.do";
 	}
 
-
+	@RequestMapping("/update.do")
+	public String update(BoardVO vo, Model model) {
+	    BoardVO board = boardService.getBoard(vo);
+	    model.addAttribute("board", board);
+	    return "board/updateBoard.jsp";
+	}
+	
 	@RequestMapping("/updateBoard.do")
 	public String updateBoard(@ModelAttribute("board") BoardVO vo) {
 		
